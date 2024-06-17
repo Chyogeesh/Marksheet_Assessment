@@ -1,0 +1,29 @@
+@RestController
+@RequestMapping("/api/user")
+public class UserController {
+    private final UserRepository userRepository;
+    
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+    
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
+        // Implement the logic to store the user's information securely in the database
+        userRepository.save(user);
+        
+        return ResponseEntity.ok("User registered successfully");
+    }
+    
+    @GetMapping("/fetch")
+    public ResponseEntity<User> fetchUserDetails(@RequestParam String username) {
+        // Implement the logic to fetch the user's information securely from the database
+        User user = userRepository.findByUsername(username);
+        
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}
